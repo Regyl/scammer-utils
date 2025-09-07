@@ -1,6 +1,8 @@
 package com.github.regyl.service.resetpassword;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
@@ -11,9 +13,11 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.LockSupport;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
-public class ResetPasswordService {
+@ConditionalOnBean(AsyncResetPasswordService.class)
+public class ResetPasswordServiceImpl {
 
     private static final ThreadLocal<RestTemplate> restTemplateThreadLocal;
 
@@ -24,6 +28,7 @@ public class ResetPasswordService {
     private final ExistEmailSupplierImpl existEmailSupplier;
 
     public void reset() {
+        long start = System.nanoTime();
         String email = existEmailSupplier.get();
         Map<String, Object> payload = new HashMap<>();
         payload.put("Login", email);
@@ -35,14 +40,15 @@ public class ResetPasswordService {
         }
 
         try {
-        ResponseEntity<String> response = restTemplateThreadLocal.get().postForEntity("https://geba-qi.co/api/ResetPassword", payload, String.class);
-        String msg = String.format("Status: %s. For entity :%s. Body: %s", response.getStatusCode(), payload, response.getBody());
-        System.out.println(msg);
+            ResponseEntity<String> response = restTemplateThreadLocal.get().postForEntity("https://geba-qi.co/api/ResetPassword", payload, String.class);
+            long end = System.nanoTime();
+            String msg = String.format("Status: %s. Took %d ms. For entity: %s. Body: %s", response.getStatusCode(), TimeUnit.NANOSECONDS.toMillis(end-start), payload, response.getBody());
+            log.info(msg);
         } catch (HttpClientErrorException.TooManyRequests e) {
-            System.err.println(e.getMessage());
+            log.error("Got too many requests. Pausing for 15 minutes");
             LockSupport.parkNanos(TimeUnit.MINUTES.toNanos(15));
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Error", e);
         }
     }
 }

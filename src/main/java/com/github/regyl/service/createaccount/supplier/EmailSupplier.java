@@ -1,6 +1,5 @@
 package com.github.regyl.service.createaccount.supplier;
 
-import com.github.javafaker.Faker;
 import com.ibm.icu.text.Transliterator;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.stereotype.Component;
@@ -9,7 +8,6 @@ import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 @Component
 public class EmailSupplier implements Function<Pair<String, String>, String> {

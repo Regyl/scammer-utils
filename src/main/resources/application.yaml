@@ -1,5 +1,6 @@
 scammers:
   gebaqi:
-    enabled:
-      create-account: true
-      reset-password: false
+    reset-password:
+      enabled: true
+    create-account:
+      enabled: true
