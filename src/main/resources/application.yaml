@@ -1,0 +1,5 @@
+scammers:
+  gebaqi:
+    enabled:
+      create-account: true
+      reset-password: false

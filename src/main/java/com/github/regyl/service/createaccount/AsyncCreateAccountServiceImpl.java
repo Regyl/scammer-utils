@@ -1,4 +1,4 @@
-package com.github.regyl.service.resetpassword;
+package com.github.regyl.service.createaccount;
 
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -10,21 +10,24 @@ import java.util.concurrent.Executors;
 
 @Component
 @RequiredArgsConstructor
-@ConditionalOnProperty(value = "scammers.gebaqi.enabled.reset-password", havingValue = "true")
-public class AsyncResetPasswordService {
+@ConditionalOnProperty(value = "scammers.gebaqi.enabled.create-account", havingValue = "true")
+public class AsyncCreateAccountServiceImpl implements Runnable {
 
-    private static final int THREADS = 1;
+    private final CreateAccountServiceImpl createAccountService;
+    private static final int THREADS = 10;
 
-    private final ResetPasswordService resetPasswordService;
-
+    @Override
     @PostConstruct
-    public void init(){
+    public void run() {
         try (ExecutorService executorService = Executors.newFixedThreadPool(THREADS)) {
 
             for (int i = 0; i < THREADS; i++) {
                 executorService.submit(() -> {
                     while (true) {
-                        resetPasswordService.reset();
+                        long start = System.nanoTime();
+                        createAccountService.createAccount();
+                        long end = System.nanoTime();
+//                    System.out.println("Spent seconds: " + TimeUnit.NANOSECONDS.toMillis(end-start));
                     }
                 });
             }

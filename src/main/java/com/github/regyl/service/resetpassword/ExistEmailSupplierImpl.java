@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.function.Supplier;
 
 @Component
-public class ExistEmailSupplier implements Supplier<String> {
+public class ExistEmailSupplierImpl implements Supplier<String> {
 
     private static final SecureRandom SECURE_RANDOM = new SecureRandom();
     private static final List<String> EMAILS;

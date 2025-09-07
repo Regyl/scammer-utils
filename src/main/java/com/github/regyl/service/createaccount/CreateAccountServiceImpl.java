@@ -10,13 +10,13 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.LockSupport;
 
 @Component
-public class CreateAccountService {
+public class CreateAccountServiceImpl {
 
     private final ThreadLocal<RestTemplate> restTemplateThreadLocal;
-    private final PayloadBuilderService payloadBuilderService;
+    private final PayloadBuilderServiceImpl payloadBuilderService;
 
 
-    public CreateAccountService(PayloadBuilderService payloadBuilderService) {
+    public CreateAccountServiceImpl(PayloadBuilderServiceImpl payloadBuilderService) {
         this.payloadBuilderService = payloadBuilderService;
         restTemplateThreadLocal = new ThreadLocal<>();
     }
@@ -36,7 +36,7 @@ public class CreateAccountService {
             System.out.println(msg);
         } catch (HttpClientErrorException.TooManyRequests e) {
             System.err.println(e.getMessage());
-            LockSupport.parkNanos(TimeUnit.SECONDS.toNanos(5));
+            LockSupport.parkNanos(TimeUnit.MINUTES.toNanos(15));
         } catch (Exception e) {
             e.printStackTrace();
         }

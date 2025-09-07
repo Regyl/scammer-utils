@@ -1,8 +1,6 @@
 package com.github.regyl.service.resetpassword;
 
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Scope;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
@@ -23,7 +21,7 @@ public class ResetPasswordService {
         restTemplateThreadLocal = new ThreadLocal<>();
     }
 
-    private final ExistEmailSupplier existEmailSupplier;
+    private final ExistEmailSupplierImpl existEmailSupplier;
 
     public void reset() {
         String email = existEmailSupplier.get();
@@ -42,7 +40,7 @@ public class ResetPasswordService {
         System.out.println(msg);
         } catch (HttpClientErrorException.TooManyRequests e) {
             System.err.println(e.getMessage());
-            LockSupport.parkNanos(TimeUnit.SECONDS.toNanos(5));
+            LockSupport.parkNanos(TimeUnit.MINUTES.toNanos(15));
         } catch (Exception e) {
             e.printStackTrace();
         }

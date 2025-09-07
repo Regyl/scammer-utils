@@ -11,7 +11,7 @@ import java.util.function.Supplier;
 
 @Component
 @RequiredArgsConstructor
-public class PayloadBuilderService implements Supplier<Map<String, Object>> {
+public class PayloadBuilderServiceImpl implements Supplier<Map<String, Object>> {
 
     private final FirstNameSupplier firstNameSupplier;
     private final LastNameSupplier lastNameSupplier;
