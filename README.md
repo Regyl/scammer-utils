@@ -29,8 +29,3 @@ https://lk.fas.gov.ru/appeals тут подать обращение
 ssh bruteforce https://github.com/pwnesia/ssb
 ssh snake строит топологию всех связанных доступных тачек https://github.com/MegaManSec/SSH-Snake
 port scanner https://github.com/projectdiscovery/naabu
-
-Автоматический сканер доменных имен, схожих с целевыми (sber, gosuslugi, ostrovok, etc)
-
------- Письмо
-Заявление в ФСБ России #20250904010145
